@@ -1,5 +1,7 @@
 package com.example.httpcode
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,21 +9,25 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class CustomAdapter(private val dataSet: ArrayList<Code>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(val context: Context) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomAdapter.ViewHolder {
+    var dataSet: List<Code> = listOf()
+
+    //ToDo Add onclicklistener
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.cardview_item, parent, false)
 
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: CustomAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val codeItem = dataSet[position]
 
         Picasso.get()
-            .load(codeItem.image_url)
+            .load("https://http.dog/" + codeItem.image_url)
             .fit()
             .centerCrop()
             .into(holder.image)
@@ -38,6 +44,12 @@ class CustomAdapter(private val dataSet: ArrayList<Code>) : RecyclerView.Adapter
         }
 
     }
+
+    fun setCodeListItems(codeList: List<Code>){
+        this.dataSet = codeList
+        notifyDataSetChanged()
+    }
+
 }
 
 

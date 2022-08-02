@@ -1,3 +1,9 @@
 package com.example.httpcode
 
-class Code(val image_url: String, val title: String, val description: String)
+import com.google.gson.annotations.SerializedName
+
+//@SerializedName()
+class Code(
+    @SerializedName("path") val image_url: String,
+    @SerializedName("title") val title: String,
+    @SerializedName("description") val description: String)
