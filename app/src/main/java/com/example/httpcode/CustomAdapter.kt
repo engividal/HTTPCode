@@ -1,7 +1,6 @@
 package com.example.httpcode
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,25 +30,22 @@ class CustomAdapter(val context: Context) : RecyclerView.Adapter<CustomAdapter.V
             .fit()
             .centerCrop()
             .into(holder.image)
-
     }
 
     override fun getItemCount() = dataSet.size
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView
 
         init {
             image = view.findViewById(R.id.thumbnail)
         }
-
     }
 
-    fun setCodeListItems(codeList: List<Code>){
+    fun setCodeListItems(codeList: List<Code>) {
         this.dataSet = codeList
         notifyDataSetChanged()
     }
-
 }
 
 

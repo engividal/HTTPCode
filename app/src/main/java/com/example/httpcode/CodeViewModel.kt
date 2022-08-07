@@ -1,31 +1,28 @@
 package com.example.httpcode
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class CodeViewModel: ViewModel() {
+class CodeViewModel constructor(private val repository: Repository) : ViewModel() {
 
     private val _codeLiveData = MutableLiveData<List<Code>>()
-
-    val codeLiveData:LiveData<List<Code>> = _codeLiveData
+    val codeLiveData: LiveData<List<Code>> = _codeLiveData
 
     fun getCodes(){
-        val apiInterface = ApiInterface.create().getCode()
-
-        apiInterface.enqueue( object  : Callback<List<Code>> {
-            override fun onResponse(call: Call<List<Code>>, response: Response<List<Code>>) {
-                Log.d("Debug", response.body()!!.toString())
-                if(response?.body() != null) _codeLiveData.value = response.body()!!
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getCodes()
+            withContext(Dispatchers.Main){
+                if (response.isSuccessful){
+                    _codeLiveData.value = response.body()
+                } else {
+                    // TODO Launch an exception
+                }
             }
-
-            override fun onFailure(call: Call<List<Code>>, t: Throwable) {
-            }
-
-        })
+        }
     }
 }

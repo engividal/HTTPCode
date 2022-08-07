@@ -1,13 +1,14 @@
 package com.example.httpcode
 
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiInterface {
     @GET("HOSrl_")
-    fun getCode() : Call<List<Code>>
+    suspend fun getCodes() : Response<List<Code>>
 
     companion object {
 
@@ -20,7 +21,6 @@ interface ApiInterface {
                 .baseUrl(BASE_URL)
                 .build()
             return retrofit.create(ApiInterface::class.java)
-
         }
     }
 }

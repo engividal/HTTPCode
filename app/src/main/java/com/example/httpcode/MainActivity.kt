@@ -1,23 +1,23 @@
 package com.example.httpcode
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var customAdapter: CustomAdapter
-    val viewModel = CodeViewModel()
+    lateinit var viewModel: CodeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val apiInterface = ApiInterface.create()
+        val repository = Repository(apiInterface)
+        viewModel = CodeViewModel(repository)
 
         recyclerView = findViewById(R.id.recyclerview)
         customAdapter = CustomAdapter(this)
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.codeLiveData.observe(this) {
             customAdapter.setCodeListItems(it)
         }
+
         viewModel.getCodes()
     }
 }
