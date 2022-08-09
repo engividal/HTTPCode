@@ -8,7 +8,8 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class CustomAdapter(val context: Context) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(val context: Context, private val itemClickListener: (Int) -> Unit) :
+    RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     var dataSet: List<Code> = listOf()
 
@@ -24,12 +25,13 @@ class CustomAdapter(val context: Context) : RecyclerView.Adapter<CustomAdapter.V
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val codeItem = dataSet[position]
-
         Picasso.get()
             .load("https://http.dog/" + codeItem.image_url)
             .fit()
             .centerCrop()
             .into(holder.image)
+
+        holder.bind(codeItem, itemClickListener)
     }
 
     override fun getItemCount() = dataSet.size
@@ -39,6 +41,10 @@ class CustomAdapter(val context: Context) : RecyclerView.Adapter<CustomAdapter.V
 
         init {
             image = view.findViewById(R.id.thumbnail)
+        }
+
+        fun bind(codeItem: Code, itemClickListener: (Int) -> Unit) {
+            itemView.setOnClickListener { itemClickListener(adapterPosition) }
         }
     }
 
