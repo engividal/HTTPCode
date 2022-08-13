@@ -1,4 +1,4 @@
-package com.example.httpcode
+package com.example.httpcode.view
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.httpcode.R
+import com.example.httpcode.data.Code
 import com.squareup.picasso.Picasso
 
 class CustomAdapter(val context: Context, private val itemClickListener: (Int) -> Unit) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     var dataSet: List<Code> = listOf()
-
-    //ToDo Add onclicklistener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -27,9 +27,11 @@ class CustomAdapter(val context: Context, private val itemClickListener: (Int) -
         val codeItem = dataSet[position]
         Picasso.get()
             .load("https://http.dog/" + codeItem.image_url)
+            .error(R.drawable.code100)
             .fit()
             .centerCrop()
             .into(holder.image)
+
 
         holder.bind(codeItem, itemClickListener)
     }
