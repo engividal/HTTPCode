@@ -3,6 +3,8 @@ package com.example.httpcode.viewmodel
 import androidx.lifecycle.*
 import com.example.httpcode.data.Code
 import com.example.httpcode.data.Repository
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CodeViewModel constructor(private val repository: Repository) : ViewModel() {
@@ -16,14 +18,18 @@ class CodeViewModel constructor(private val repository: Repository) : ViewModel(
         }
     }
 
+    private val coroutineExceptionHandler = CoroutineExceptionHandler{ _, throwable ->
+        throwable.printStackTrace()
+    }
+
     fun getCodes(){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val response = repository.getCodesAPI()
             if (response.isSuccessful){
-                _codeLiveData.value = response.body()
-                // TODO Chamar funcao para salvar no banco
                 insertAll(response.body())
+                _codeLiveData.value = repository.getCodeDB()
             } else {
+                throw Exception("Failed coroutine")
                 // TODO Launch an exception
                 // TODO Criar funcao pegaLocal caso esteja sem internet
                 _codeLiveData.value = repository.getCodeDB()
