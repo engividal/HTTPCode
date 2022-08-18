@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = arrayOf(Code::class), version = 1, exportSchema = false)
-public abstract class CodeRoomDatabase : RoomDatabase() {
+abstract class CodeRoomDatabase : RoomDatabase() {
 
     abstract fun codeDao(): CodeDao
 

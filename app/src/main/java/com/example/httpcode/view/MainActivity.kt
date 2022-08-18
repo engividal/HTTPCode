@@ -51,9 +51,13 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = customAdapter
 
         viewModel.codeLiveData.observe(this) {
-            customAdapter.setCodeListItems(it)
+            if (it.isNotEmpty()) {
+                customAdapter.setCodeListItems(it)
+            } else {
+                Toast.makeText(this, "List is empty!", Toast.LENGTH_SHORT).show()
+            }
         }
-
+        
         viewModel.getCodes()
 
     }

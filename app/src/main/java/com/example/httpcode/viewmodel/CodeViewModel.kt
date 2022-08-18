@@ -18,21 +18,18 @@ class CodeViewModel constructor(private val repository: Repository) : ViewModel(
         }
     }
 
-    private val coroutineExceptionHandler = CoroutineExceptionHandler{ _, throwable ->
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
     }
 
-    fun getCodes(){
+    fun getCodes() {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            val response = repository.getCodesAPI()
-            if (response.isSuccessful){
+            try {
+                val response = repository.getCodesAPI()
                 insertAll(response.body())
-                _codeLiveData.value = repository.getCodeDB()
-            } else {
-                throw Exception("Failed coroutine")
-                // TODO Launch an exception
-                // TODO Criar funcao pegaLocal caso esteja sem internet
-                _codeLiveData.value = repository.getCodeDB()
+                _codeLiveData.postValue(repository.getCodeDB())
+            } catch (e: Exception) {
+                _codeLiveData.postValue(repository.getCodeDB())
             }
         }
     }
