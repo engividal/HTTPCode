@@ -1,8 +1,9 @@
 # HTTPCode is a Android Project with MVVM Architecture
 
-HTTPCode is a simple project on Android List Based. This app show a cute images regarding HTTP Codes.
+HTTPCode is a simple project on Android List Based. 
+This app show a cute images regarding HTTP Codes.
 
-![Screenshot of the MainScreen](mainscreen.png)
+<img src="mainscreen.png" width="250" alt="Screenshot of the MainScreen">
 
 The main idea of the project is follow the MVVM Architecture.
 
